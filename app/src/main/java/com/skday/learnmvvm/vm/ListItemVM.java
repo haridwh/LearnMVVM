@@ -1,4 +1,4 @@
-package com.skday.learnmvvm;
+package com.skday.learnmvvm.vm;
 
 import android.databinding.ObservableField;
 import android.support.v7.widget.RecyclerView;

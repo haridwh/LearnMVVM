@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.skday.learnmvvm.ListItemVM;
+import com.skday.learnmvvm.vm.ListItemVM;
 import com.skday.learnmvvm.R;
 import com.skday.learnmvvm.databinding.ListItemBinding;
 import com.skday.learnmvvm.model.Task;
@@ -40,6 +40,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder>{
 
     @Override
     public int getItemCount() {
+        if (mList == null) {
+            return 0;
+        }
         return mList.size();
     }
 

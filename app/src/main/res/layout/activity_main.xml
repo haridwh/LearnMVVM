@@ -10,7 +10,7 @@
 
         <variable
             name="vm"
-            type="com.skday.learnmvvm.MainVM"/>
+            type="com.skday.learnmvvm.vm.MainVM"/>
 
     </data>
 
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.skday.learnmvvm.MainActivity">
+        tools:context="com.skday.learnmvvm.vm.MainActivity">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"

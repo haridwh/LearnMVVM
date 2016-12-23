@@ -1,4 +1,4 @@
-package com.skday.learnmvvm.util;
+package com.skday.learnmvvm.adapter;
 
 import android.text.Editable;
 import android.text.TextWatcher;

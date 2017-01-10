@@ -6,6 +6,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 
 import com.skday.learnmvvm.SharedPrefs.PrefTask;
@@ -29,11 +30,12 @@ public class MainVM {
     public ObservableField<String> inpDetail = new ObservableField<>("");
     public ObservableField<Boolean> isVisibility = new ObservableField<>(false);
     public ObservableField<Boolean> isFill = new ObservableField<>(false);
+    public RVAdapter bAdapter;
+    public LinearLayoutManager bLayoutManager;
+
     private List<Task> mList = new ArrayList<>();
     private Context bContext;
     private ActivityMainBinding binding;
-    public RVAdapter bAdapter;
-    public LinearLayoutManager bLayoutManager;
     private DaoTask listTask;
 
     public MainVM(Context bContext, ActivityMainBinding binding) {
@@ -59,6 +61,7 @@ public class MainVM {
         } else {
             if (isFill.get()) {
                 listTask = PrefTask.getTask(bContext);
+                Log.i(this.getClass().getName(), (listTask != null)+"");
                 if (listTask != null) {
                     listTask.getListTask()
                             .add(new Task(inpTitle.get(), inpDetail.get()));

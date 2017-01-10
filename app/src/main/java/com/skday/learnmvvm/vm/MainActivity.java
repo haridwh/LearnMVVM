@@ -7,18 +7,29 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.skday.learnmvvm.R;
+import com.skday.learnmvvm.base.BaseActivity;
 import com.skday.learnmvvm.databinding.ActivityMainBinding;
 import com.skday.learnmvvm.utils.SimpleItemTouchHelperCallback;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     ActivityMainBinding binding;
+    MainVM vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        MainVM vm = new MainVM(this,binding);
+        vm = new MainVM(this,binding);
+        binding.setVm(vm);
+        setSupportActionBar(binding.toolBar);
+        getSupportActionBar().setTitle("Learn");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        vm = new MainVM(this,binding);
         binding.setVm(vm);
     }
 }

@@ -1,14 +1,18 @@
 package com.skday.learnmvvm.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.skday.learnmvvm.SharedPrefs.PrefTask;
 import com.skday.learnmvvm.dao.DaoTask;
+import com.skday.learnmvvm.utils.ItemTouchHelperViewHolder;
+import com.skday.learnmvvm.vm.DetailActivity;
 import com.skday.learnmvvm.vm.ListItemVM;
 import com.skday.learnmvvm.R;
 import com.skday.learnmvvm.databinding.ListItemBinding;
@@ -22,7 +26,8 @@ import java.util.List;
  * Created by skday on 12/22/16.
  */
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder> implements ItemTouchHelperAdapter{
+public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder>
+        implements ItemTouchHelperAdapter{
     private List<Task> mList;
     private Context bContext;
 
@@ -66,7 +71,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder> imp
         }
     }
 
-    public static class ItemBindingHolder extends BindingHolder {
+    public static class ItemBindingHolder extends BindingHolder
+            implements ItemTouchHelperViewHolder {
         private ListItemBinding binding;
 
         public ItemBindingHolder(ListItemBinding binding) {
@@ -76,6 +82,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder> imp
 
         public ListItemBinding getBinding(){
             return this.binding;
+        }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(Color.WHITE);
         }
     }
 
@@ -108,5 +124,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder> imp
         listTask.getListTask().remove(position);
         PrefTask.setTask(listTask, bContext);
         notifyItemRemoved(position);
+    }
+
+    @Override
+    public void onItemEdit(int position) {
+        Intent intent = new Intent(bContext, DetailActivity.class);
+        intent.putExtra("position", position);
+        bContext.startActivity(intent);
     }
 }

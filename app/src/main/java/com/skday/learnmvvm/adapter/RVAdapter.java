@@ -1,27 +1,34 @@
 package com.skday.learnmvvm.adapter;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.skday.learnmvvm.SharedPrefs.PrefTask;
+import com.skday.learnmvvm.dao.DaoTask;
 import com.skday.learnmvvm.vm.ListItemVM;
 import com.skday.learnmvvm.R;
 import com.skday.learnmvvm.databinding.ListItemBinding;
 import com.skday.learnmvvm.model.Task;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by skday on 12/22/16.
  */
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder>{
+public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder> implements ItemTouchHelperAdapter{
     private List<Task> mList;
+    private Context bContext;
 
-    public RVAdapter(List<Task> mList){
+    public RVAdapter(List<Task> mList, Context bContext){
         this.mList = mList;
+        this.bContext = bContext;
     }
 
     @Override
@@ -70,5 +77,36 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.BindingHolder>{
         public ListItemBinding getBinding(){
             return this.binding;
         }
+    }
+
+
+    //ItemTouchHelper
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        DaoTask listTask = PrefTask.getTask(bContext);
+        if (fromPosition < toPosition){
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mList,i,i+1);
+                Collections.swap(listTask.getListTask(),i,i+1);
+            }
+        }else{
+            for (int i = fromPosition; i > toPosition ; i--) {
+                Collections.swap(mList,i,i-1);
+                Collections.swap(listTask.getListTask(),i,i-1);
+            }
+        }
+        PrefTask.setTask(listTask, bContext);
+        notifyItemMoved(fromPosition,toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        mList.remove(position);
+        DaoTask listTask = PrefTask.getTask(bContext);
+        listTask.getListTask().remove(position);
+        PrefTask.setTask(listTask, bContext);
+        notifyItemRemoved(position);
     }
 }
